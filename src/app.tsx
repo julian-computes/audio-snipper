@@ -101,7 +101,7 @@ export function App() {
         <>
             <h1>Audio Snipper</h1>
 
-            {!ready && <p aria-live="polite" role="status">Loading Audio Snipper...</p>}
+            {!ready && <p aria-live="polite" role="status" className="message">Loading Audio Snipper...</p>}
 
             <div className="control-group">
                 <label htmlFor="audio-upload">Upload Audio</label>
