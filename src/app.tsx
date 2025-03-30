@@ -87,10 +87,12 @@ export function App() {
     };
 
     return (
-        <>
+        <main>
             <h1>Audio Snipper</h1>
 
-            {!ready && <StatusMessage message="Loading Audio Snipper..."/>}
+            <section className="explanation">
+                <p>Create an audio snippet for free.</p>
+            </section>
 
             <FileUploader
                 onFileSelect={handleFileSelect}
@@ -127,6 +129,6 @@ export function App() {
                     </p>
                 </section>
             </footer>
-        </>
+        </main>
     );
 }
