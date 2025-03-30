@@ -73,7 +73,6 @@ export function SnippingControls({
                     type="text"
                     value={outputFileName}
                     onChange={(e) => onOutputFileNameChange((e.target as HTMLInputElement).value)}
-                    placeholder="my_audio_snippet"
                     disabled={disabled}
                     aria-describedby="filename-description"
                     required
