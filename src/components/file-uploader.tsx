@@ -6,7 +6,7 @@ interface FileUploaderProps {
 }
 
 export function FileUploader({onFileSelect, disabled}: FileUploaderProps) {
-    const handleFileUpload = (e: h.JSX.TargetedEvent<HTMLInputElement, Event>) => {
+    const handleFileUpload = (e: h.JSX.TargetedEvent<HTMLInputElement>) => {
         const file = e.currentTarget.files?.[0];
         if (!file) return;
 

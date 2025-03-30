@@ -21,10 +21,6 @@ class FFmpegService {
         }
     }
 
-    isLoaded(): boolean {
-        return this.loaded;
-    }
-
     async cropAudio(
         audioFile: File,
         startTime: number,

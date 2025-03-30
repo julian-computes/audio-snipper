@@ -20,7 +20,7 @@ export function SnippingControls({
                                      disabled
                                  }: SnippingControlsProps) {
 
-    const handleDurationChange = (e: h.JSX.TargetedEvent<HTMLInputElement, Event>) => {
+    const handleDurationChange = (e: h.JSX.TargetedEvent<HTMLInputElement>) => {
         const value = parseFloat((e.target as HTMLInputElement).value);
         if (value < 0) {
             onDurationChange(0);
