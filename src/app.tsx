@@ -1,68 +1,64 @@
-import { h } from 'preact';
-import { useEffect, useRef, useState } from 'preact/hooks';
+import {useEffect, useState} from 'preact/hooks';
 import ffmpegService from './ffmpeg-service';
 import './app.css';
 
+import {FileUploader} from './components/file-uploader';
+import {AudioPlayer} from './components/audio-player';
+import {SnippingControls} from './components/snipping-controls';
+import {ProcessingButton} from './components/processing-button';
+import {StatusMessage} from './components/status-message';
+
 export function App() {
-    const audioRef = useRef<HTMLAudioElement>(null);
-    const messageRef = useRef<HTMLParagraphElement>(null);
     const [ready, setReady] = useState<boolean>(false);
     const [audioFile, setAudioFile] = useState<File | null>(null);
     const [startTime, setStartTime] = useState<number>(0);
     const [duration, setDuration] = useState<number>(10);
+    const [outputFileName, setOutputFileName] = useState<string>("");
     const [processing, setProcessing] = useState<boolean>(false);
+    const [statusMessage, setStatusMessage] = useState<string>("Loading Audio Snipper...");
+    const isProcessingButtonDisabled = !ready || processing || !outputFileName.trim() || !audioFile;
 
     useEffect(() => {
         ffmpegService.load().then(() => {
             setReady(true);
-            if (messageRef.current) {
-                messageRef.current.textContent = "Audio Snipper is ready!";
-            }
+            setStatusMessage("Audio Snipper is ready!");
         }).catch((error: Error) => {
             console.error("Error loading FFmpeg:", error);
-            if (messageRef.current) {
-                messageRef.current.textContent = "Failed to load Audio Snipper.";
-            }
+            setStatusMessage("Failed to load Audio Snipper.");
         });
     }, []);
 
-    const handleFileUpload = (e: h.JSX.TargetedEvent<HTMLInputElement, Event>) => {
-        const file = e.currentTarget.files?.[0];
-        if (!file) return;
-
+    const handleFileSelect = (file: File) => {
         setAudioFile(file);
-
-        if (audioRef.current) {
-            audioRef.current.src = URL.createObjectURL(file);
-        }
-
-        if (messageRef.current) {
-            messageRef.current.textContent = `File "${file.name}" loaded successfully.`;
-        }
+        setStatusMessage(`File "${file.name}" loaded successfully.`);
     };
 
     const snipAudio = async () => {
         if (!audioFile) {
-            if (messageRef.current) {
-                messageRef.current.textContent = "Please upload an audio file first.";
-            }
+            setStatusMessage("Please upload an audio file first.");
             return;
         }
 
         if (!ready) {
-            if (messageRef.current) {
-                messageRef.current.textContent = "Audio Snipper isn't ready yet. Please wait.";
-            }
+            setStatusMessage("Audio Snipper isn't ready yet. Please wait.");
             return;
         }
 
+        if (!outputFileName.trim()) {
+            setStatusMessage("Please specify an output file name.");
+            return;
+        }
+
+        // Ensure we have a valid file extension
+        let finalFileName = outputFileName.trim();
+        if (!finalFileName.endsWith('.mp3')) {
+            finalFileName += '.mp3';
+        }
+
         setProcessing(true);
+        setStatusMessage("Processing...");
 
         try {
-            if (messageRef.current) {
-                messageRef.current.textContent = "Processing...";
-            }
-
             // Use the FFmpeg service to snip the audio
             const outputBlob = await ffmpegService.cropAudio(
                 audioFile,
@@ -73,24 +69,17 @@ export function App() {
             // Create a URL for the output blob
             const url = URL.createObjectURL(outputBlob);
 
-            // Update the audio player with the new file
-            if (audioRef.current) {
-                audioRef.current.src = url;
-            }
-
             // Create a download link
             const a = document.createElement("a");
             a.href = url;
-            a.download = "snipped_audio.mp3";
+            a.download = finalFileName;
             a.click();
 
-            if (messageRef.current) {
-                messageRef.current.textContent = "Audio snipped successfully!";
-            }
+            setStatusMessage("Audio snipped successfully!");
         } catch (error) {
             console.error("Error processing audio:", error);
-            if (messageRef.current && error instanceof Error) {
-                messageRef.current.textContent = `Error: ${error.message}`;
+            if (error instanceof Error) {
+                setStatusMessage(`Error: ${error.message}`);
             }
         } finally {
             setProcessing(false);
@@ -101,71 +90,39 @@ export function App() {
         <>
             <h1>Audio Snipper</h1>
 
-            {!ready && <p aria-live="polite" role="status" className="message">Loading Audio Snipper...</p>}
+            {!ready && <StatusMessage message="Loading Audio Snipper..."/>}
 
-            <div className="control-group">
-                <label htmlFor="audio-upload">Upload Audio</label>
-                <input
-                    id="audio-upload"
-                    type="file"
-                    accept="audio/*"
-                    onChange={handleFileUpload}
-                    aria-describedby="upload-description"
-                />
-                <p id="upload-description" className="helper-text">Select an audio file to snip</p>
-            </div>
+            <FileUploader
+                onFileSelect={handleFileSelect}
+                disabled={processing}
+            />
 
-            <audio
-                ref={audioRef}
-                controls
-                aria-label="Audio player"
-                className={audioFile ? "" : "hidden"}
-            ></audio>
+            <AudioPlayer audioFile={audioFile}/>
 
-            <div className="control-group">
-                <label htmlFor="start-time">
-                    Start Time (seconds):
-                </label>
-                <input
-                    id="start-time"
-                    type="number"
-                    min="0"
-                    value={startTime}
-                    onChange={(e) => setStartTime(parseFloat((e.target as HTMLInputElement).value))}
-                    aria-describedby="start-time-description"
-                />
-                <p id="start-time-description" className="helper-text">Where to begin the audio snippet</p>
-            </div>
+            <SnippingControls
+                startTime={startTime}
+                duration={duration}
+                outputFileName={outputFileName}
+                onStartTimeChange={setStartTime}
+                onDurationChange={setDuration}
+                onOutputFileNameChange={setOutputFileName}
+                disabled={processing}
+            />
 
-            <div className="control-group">
-                <label htmlFor="duration">
-                    Duration (seconds):
-                </label>
-                <input
-                    id="duration"
-                    type="number"
-                    min="0.1"
-                    value={duration}
-                    onChange={(e) => setDuration(parseFloat((e.target as HTMLInputElement).value))}
-                    aria-describedby="duration-description"
-                />
-                <p id="duration-description" className="helper-text">Length of the audio snippet</p>
-            </div>
-
-            <button
+            <ProcessingButton
                 onClick={snipAudio}
-                disabled={!ready || processing}
-                aria-busy={processing}
-            >
-                {processing ? "Processing..." : "Snip"}
-            </button>
+                disabled={isProcessingButtonDisabled}
+                processing={processing}
+            />
 
-            <p
-                ref={messageRef}
-                aria-live="polite"
-                className="message"
-                role="status"
-            ></p>
+            <StatusMessage message={statusMessage}/>
+
+            <footer className="support-section">
+                <p>
+                    <a href="https://buymeacoffee.com/julian.computes" target="_blank"
+                       rel="noopener noreferrer">Buy me a coffee</a>
+                </p>
+            </footer>
         </>
     );
 }

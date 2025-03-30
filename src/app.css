@@ -19,13 +19,16 @@ input[type="file"] {
   max-width: 300px;
 }
 
-input[type="number"] {
+input {
   padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 3px;
-  width: 100px;
   margin-bottom: 0.25rem;
   font-size: 0.9rem;
+}
+
+input[type="number"] {
+  width: 100px;
 }
 
 .helper-text {
@@ -90,4 +93,24 @@ button:active:not(:disabled) {
   min-height: 3rem;
   color: #00407a; /* Darker blue text for contrast */
   border-radius: 0 3px 3px 0; /* Rounded on the right side */
+}
+
+.support-section {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eaeaea;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.support-section a {
+  color: #0070f3;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.support-section a:hover {
+  color: #0051b3;
+  text-decoration: underline;
 }
