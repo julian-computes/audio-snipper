@@ -1,0 +1,25 @@
+{
+  "name": "audio-snip",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@ffmpeg/core": "^0.12.10",
+    "@ffmpeg/core-mt": "^0.12.9",
+    "@ffmpeg/ffmpeg": "^0.12.15",
+    "@ffmpeg/util": "^0.12.2",
+    "preact": "^10.26.2",
+    "tar": "^7.4.3"
+  },
+  "devDependencies": {
+    "@ffmpeg/types": "^0.12.4",
+    "@preact/preset-vite": "^2.10.1",
+    "typescript": "~5.7.2",
+    "vite": "^6.2.0"
+  }
+}

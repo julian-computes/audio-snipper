@@ -1,0 +1,93 @@
+h1 {
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  color: #222;
+}
+
+/* Form elements */
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+input[type="file"] {
+  margin-bottom: 0.5rem;
+  width: 100%;
+  max-width: 300px;
+}
+
+input[type="number"] {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  width: 100px;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.helper-text {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+audio {
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+.hidden {
+  display: none;
+}
+
+button {
+  background-color: #008bcc; /* Accessible blue */
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+button:hover:not(:disabled) {
+  background-color: #0052a3; /* Slightly darker blue on hover */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
+}
+
+button:focus {
+  outline: 2px solid #0066cc;
+  outline-offset: 2px;
+}
+
+button:disabled {
+  background-color: #b3d1f0; /* Light blue when disabled */
+  color: #5a8bba; /* Darker text for contrast on disabled state */
+  cursor: not-allowed;
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px); /* Slight press effect */
+}
+
+/* Layout */
+.control-group {
+  margin-bottom: 1.5rem;
+}
+
+.message {
+  margin-top: 1.5rem;
+  padding: 0.75rem;
+  background-color: #f0f7ff; /* Light blue background */
+  border-left: 3px solid #0066cc; /* Accessible blue accent */
+  font-size: 0.9rem;
+  min-height: 3rem;
+  color: #00407a; /* Darker blue text for contrast */
+  border-radius: 0 3px 3px 0; /* Rounded on the right side */
+}
