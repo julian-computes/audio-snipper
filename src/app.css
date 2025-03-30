@@ -96,9 +96,10 @@ button:active:not(:disabled) {
 }
 
 .support-section {
+  border-top: 1px solid #eaeaea;
   margin-top: 2rem;
   padding-top: 1rem;
-  border-top: 1px solid #eaeaea;
+
   text-align: center;
   font-size: 0.9rem;
 }

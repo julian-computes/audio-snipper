@@ -40,7 +40,7 @@ export function SnippingControls({
                     type="number"
                     min="0"
                     value={startTime}
-                    onChange={(e) => onStartTimeChange(parseFloat((e.target as HTMLInputElement).value))}
+                    onInput={(e) => onStartTimeChange(parseFloat((e.target as HTMLInputElement).value))}
                     disabled={disabled}
                     aria-describedby="start-time-description"
                 />
@@ -57,7 +57,7 @@ export function SnippingControls({
                     min="0.1"
                     step="0.1"
                     value={duration}
-                    onChange={handleDurationChange}
+                    onInput={handleDurationChange}
                     disabled={disabled}
                     aria-describedby="duration-description"
                 />
@@ -72,7 +72,7 @@ export function SnippingControls({
                     id="output-filename"
                     type="text"
                     value={outputFileName}
-                    onChange={(e) => onOutputFileNameChange((e.target as HTMLInputElement).value)}
+                    onInput={(e) => onOutputFileNameChange((e.target as HTMLInputElement).value)}
                     disabled={disabled}
                     aria-describedby="filename-description"
                     required

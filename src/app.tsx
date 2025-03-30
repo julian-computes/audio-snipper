@@ -117,11 +117,15 @@ export function App() {
 
             <StatusMessage message={statusMessage}/>
 
-            <footer className="support-section">
-                <p>
-                    <a href="https://buymeacoffee.com/julian.computes" target="_blank"
-                       rel="noopener noreferrer">Buy me a coffee</a>
-                </p>
+            <footer>
+                <section className="support-section">
+                    <p>Audio Snipper respects your privacy. All audio processing happens in your browser.</p>
+                    <p>Your files never leave your device.</p>
+                    <p>
+                        If you like this tool, please consider <a href="https://buymeacoffee.com/julian.computes" target="_blank"
+                                                                  rel="noopener noreferrer">buying me a coffee</a>.
+                    </p>
+                </section>
             </footer>
         </>
     );
